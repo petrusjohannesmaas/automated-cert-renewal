@@ -1,0 +1,12 @@
+[Unit]
+Description=Simple Flask API with TLS
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/home/<your-user>/path/to/automated-cert-renewal/api
+ExecStart=/home/<you-user>/.local/share/pipx/venvs/flask/bin/python api.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

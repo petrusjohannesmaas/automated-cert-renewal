@@ -248,3 +248,64 @@ sudo ./scripts/cert_renewal.sh
    * Log confirms a successful curl response.
 
 ---
+
+## Sanitize your system:
+
+To fully clean up your system, if you want to, follow these steps:
+
+### **1️⃣ Stop and Disable Services**
+Since you installed a systemd service, first stop and disable it:
+```bash
+sudo systemctl stop myapi.service
+sudo systemctl disable myapi.service
+sudo systemctl daemon-reload
+```
+Then remove the service file:
+```bash
+sudo rm -f /etc/systemd/system/myapi.service
+```
+
+### **2️⃣ Remove Certificates**
+Delete the self-signed certificates:
+```bash
+sudo rm -rf /etc/myapi/certs
+```
+
+### **3️⃣ Uninstall Flask (pipx)**
+Remove Flask from pipx:
+```bash
+pipx uninstall flask
+```
+Verify it's gone:
+```bash
+pipx list | grep flask  # Should return nothing
+```
+
+### **4️⃣ Delete Project Files**
+Remove the entire project directory:
+```bash
+rm -rf ~/path/to/automated-cert-renewal
+```
+
+### **5️⃣ Cleanup Cron Jobs**
+Open your crontab:
+```bash
+sudo crontab -e
+```
+Remove the line related to your renewal script, then save and exit.
+
+### **6️⃣ Remove Logs**
+If you want to clean up the logs created during testing:
+```bash
+sudo rm -f /var/log/cert_renewal.log
+```
+
+### **7️⃣ Restart Systemd & Cron for Good Measure**
+Reload services to ensure everything is cleaned up:
+```bash
+sudo systemctl daemon-reexec
+sudo systemctl restart cron
+```
+
+That should remove all traces of the project!
+
